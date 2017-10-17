@@ -1,45 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux'
-import ReduxThunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { Route } from 'react-router-dom'
-import { createLogger } from 'redux-logger'
-import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
-import createHistory from 'history/createBrowserHistory'
+import { ConnectedRouter, push } from 'react-router-redux'
 import Link from 'react-router-redux-dom-link'
-import './index.css';
-import App from './App';
-import About from './components/About'
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
-import reducers from './reducers'
+import { store, history } from './store'
+import Routes from './Routes'
 import registerServiceWorker from './registerServiceWorker'
 import { fireUpFirebaseApp } from './firebase'
+import firebase from 'firebase'
 
 // initialize firebase app on root
 fireUpFirebaseApp()
 
-let history = createHistory()
-let store = createStore(
-	reducers, 
-	{}, 
-	applyMiddleware(
-		ReduxThunk,
-		routerMiddleware(history), 
-		createLogger()
-	)
-)
+class StartUp extends Component {
 
-ReactDOM.render(
-	<Provider store={store}>
-		<ConnectedRouter history={history}>
-			 <div>
-				<Route exact path="/" component={App} />
-				<Route path="/about" component={About} />
-				<Route path="/sign-in" component={SignIn} />
-				<Route path="/sign-up" component={SignUp} />				
-			</div>
-		</ConnectedRouter>
-	</Provider>, document.getElementById('root'));
+	componentWillMount() {
+	  firebase.auth().onAuthStateChanged((user) => {
+	    if (user) {
+	      console.log('user logged',user)
+	    } else {
+	      console.log('no active user or user logged out')
+	      store.dispatch(push('/'))
+	    }
+	  })
+	}
+
+	render() {
+		return(
+			<Provider store={store}>
+				<ConnectedRouter history={history}>
+					<Routes />		
+				</ConnectedRouter>
+			</Provider>
+		)
+	}
+}
+
+ReactDOM.render(<StartUp />, document.getElementById('root'));
 registerServiceWorker();

@@ -1,8 +1,38 @@
 import React, { Component } from 'react'
 import Link from 'react-router-redux-dom-link'
+import { connect } from 'react-redux'
+import { signInUser, emailChanged, passwordChanged } from '../actions/userActions'
 
 class SignIn extends Component {
+
+	handleButtonPress(event) {
+		event.preventDefault()
+		const { email, password } = this.props
+		this.props.signInUser({ email, password })
+	}
+
+	renderButton() {
+		if (this.props.loading) {
+			return (
+				<p>Loading...</p>
+			)
+		}
+
+		return (
+			<button 
+				className="btn btn-primary"
+				onClick={this.handleButtonPress.bind(this)}
+			>
+				Sign In
+			</button>
+		)
+	}
+
 	render() {
+
+		const { 
+			email, password, error, emailChanged, passwordChanged } = this.props
+			
 		return (
 			<div className="text-center">
 				<div className="page-header">
@@ -17,6 +47,8 @@ class SignIn extends Component {
 									type="email" 
 									className="form-control"
 									placeholder="Email"
+									onChange={e => emailChanged(e.target.value)}
+									value={email}
 								/>
 							</div>
 							<div className="form-group">
@@ -25,9 +57,19 @@ class SignIn extends Component {
 									type="password" 
 									className="form-control"
 									placeholder="Password"
+									onChange={e => passwordChanged(e.target.value)}
+									value={password}
 								/>
 							</div>
-							<button className="btn btn-primary">Sign In</button>
+							<p style={{color: 'red'}}>
+								{error}
+							</p>
+							{this.renderButton()}
+							<p style={{marginTop: 25 }}>
+								<Link to="/sign-up" style={{color: 'green' }}>
+									need an account? sign up here
+							  </Link>
+							</p>
 						</form>			
 					</div>		
 				</div>
@@ -41,4 +83,12 @@ class SignIn extends Component {
 	}
 }
 
-export default SignIn
+const maptStateToProps = ({ user }) => {
+	const { email, password, error, loading } = user
+	return { email, password, error, loading }
+}
+
+export default connect(maptStateToProps, { 
+	signInUser, emailChanged, passwordChanged  
+})(SignIn)
+

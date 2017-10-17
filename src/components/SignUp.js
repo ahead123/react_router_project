@@ -5,7 +5,7 @@ import {
 	emailChanged, 
 	passwordChanged,
 	signUpUser 
-} from '../actions/SignUpActions'
+} from '../actions/userActions'
 
 class SignUp extends Component {
 
@@ -15,15 +15,26 @@ class SignUp extends Component {
 		signUpUser({ email, password }) 
 	}
 
+	renderButton() {
+		if (this.props.loading) {
+			return (
+				<p>Loading...</p>
+			)
+		}
+
+		return (
+			<button 
+				className="btn btn-primary"
+				onClick={this.handleButtonPress.bind(this)}
+			>
+				Sign Up
+			</button>
+		)
+	}
+
 	render() {
 
-		const { 
-			email, 
-			password,
-			error, 
-			emailChanged, 
-			passwordChanged 
-		} = this.props
+		const { email, password, error, emailChanged, passwordChanged } = this.props
 
 		return (
 			<div className="text-center">
@@ -53,13 +64,15 @@ class SignUp extends Component {
 									value={password}
 								/>
 							</div>
-							<p>{error}</p>
-							<button 
-								className="btn btn-primary"
-								onClick={this.handleButtonPress.bind(this)}
-							>
-								Sign Up
-							</button>
+							<p style={{color: 'red'}}>
+								{error}
+							</p>
+							{this.renderButton()}
+							<p style={{marginTop: 25 }}>
+								<Link to="/sign-in" style={{color: 'green' }}>
+									already have an account? sign in here
+							  </Link>
+							</p>
 						</form>			
 					</div>		
 				</div>
@@ -75,26 +88,15 @@ class SignUp extends Component {
 
 const mapStateToProps = ({ user }) => {
 
-	const { 
-		email, 
-		password,
-		error,
-		loading 
-	} = user
+	const { email, password, error, loading } = user
 
-	return { 
-		email, 
-		password,
-		error,
-		loading 
-	}
+	return { email, password, error, loading }
 
 }
 
-export default connect(
-	mapStateToProps, { 
-		emailChanged,
-		passwordChanged,
-		signUpUser 
-	}
+export default connect( 
+	mapStateToProps, 
+	{ emailChanged, passwordChanged, signUpUser }
 )(SignUp)
+
+
