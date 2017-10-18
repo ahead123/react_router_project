@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { Route } from 'react-router-dom'
 import { ConnectedRouter, push } from 'react-router-redux'
 import Link from 'react-router-redux-dom-link'
 import { store, history } from './store'
@@ -9,6 +8,7 @@ import Routes from './Routes'
 import registerServiceWorker from './registerServiceWorker'
 import { fireUpFirebaseApp } from './firebase'
 import firebase from 'firebase'
+import Navigation from './components/Navigation'
 
 // initialize firebase app on root
 fireUpFirebaseApp()
@@ -30,7 +30,10 @@ class StartUp extends Component {
 		return(
 			<Provider store={store}>
 				<ConnectedRouter history={history}>
-					<Routes />		
+				 <div>
+				 	<Navigation />
+					<Routes />
+				 </div>		
 				</ConnectedRouter>
 			</Provider>
 		)
