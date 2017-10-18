@@ -34,50 +34,46 @@ class SignIn extends Component {
 			email, password, error, emailChanged, passwordChanged } = this.props
 			
 		return (
-			<div className="text-center">
-				<div className="page-header">
-					<h2>Sign In</h2>
-				</div>
-				<div className="row">
-					<div className="col-md-4 col-md-offset-4">
-						<form className="form well">
-							<div className="form-group">
-								<label>Email</label>
-								<input 
-									type="email" 
-									className="form-control"
-									placeholder="Email"
-									onChange={e => emailChanged(e.target.value)}
-									value={email}
-								/>
-							</div>
-							<div className="form-group">
-								<label>Password</label>
-								<input 
-									type="password" 
-									className="form-control"
-									placeholder="Password"
-									onChange={e => passwordChanged(e.target.value)}
-									value={password}
-								/>
-							</div>
-							<p style={{color: 'red'}}>
-								{error}
-							</p>
-							{this.renderButton()}
-							<p style={{marginTop: 25 }}>
-								<Link to="/sign-up" style={{color: 'green' }}>
-									need an account? sign up here
-							  </Link>
-							</p>
-						</form>			
-					</div>		
-				</div>
-				<div className="row" style={{marginTop: 50}}>
-					<footer>
+			<div className="container" style={{paddingTop: 80}}>
+				<div className="row justify-content-center">
+					<div className="col-sm-4 offset-sm-4 text-center card" style={{padding: 20}}>
+						<h1 className="card-title">Sign In</h1>
+							<form className="card-block">
+								<div className="form-group">
+									<label className="card-text">Enter Your Email</label>
+									<input 
+										type="email" 
+										className="form-control"
+										placeholder="Email"
+										onChange={e => emailChanged(e.target.value)}
+										value={email}
+									/>
+								</div>
+								<div className="form-group">
+									<label className="card-text">Enter Your Password</label>
+									<input 
+										type="password" 
+										className="form-control"
+										placeholder="Password"
+										onChange={e => passwordChanged(e.target.value)}
+										value={password}
+									/>
+								</div>
+								<p style={{color: 'red'}}>
+									{error}
+								</p>
+								{this.renderButton()}
+								<p style={{marginTop: 25 }}>
+									<Link to="/sign-up" style={{color: 'green' }}>
+										First time? sign up here
+							  	</Link>
+								</p>
+							</form>			
+						</div>		
+					</div>
+					<div className="text-center" style={{marginTop: 25 }}>
 						<Link to="/" className="btn btn-success">Home</Link>
-					</footer>	
-				</div>			
+					</div>	
 			</div>
 		)
 	}
