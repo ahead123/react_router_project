@@ -1,28 +1,32 @@
 import React, { Component } from 'react'
 import Link from 'react-router-redux-dom-link'
 import { connect } from 'react-redux'
-import firebase from 'firebase'
 import { NavButton } from './common'
 import { logOutUser } from '../actions/userActions'
 
 class Navigation extends Component {
 
-	handleClick() {
+	handleClick(event) {
+		event.preventDefault()
 		this.props.logOutUser()
 	}
 
 	showNavLinks() {
-		const { loading, email, user } = this.props
+		const { email, user } = this.props
 		
-		if( email!="" && user ){
+		if( email!=="" && user ){
 			const message = email ? `Welcome Back! ${email}` : 'Hello'
 			return (
 				<ul className="navbar-nav ml-auto">
-					<NavButton path="/users" text={message} /> <NavButton
-						path="/" 
-						text="Sign Out"
-						onClick={this.handleClick.bind(this)} 
-					/>
+					<NavButton path="/users" text={message} /> 
+					<li className="nav-item">
+	  				<a
+	  					className="nav-link"
+	  					onClick={this.handleClick.bind(this)}
+	  				>
+	  					Sign Out
+	  				</a>
+					</li>
 				</ul>
 			)
 		}

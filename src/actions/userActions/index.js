@@ -90,10 +90,8 @@ const signInUserFail = (dispatch, error ) => {
 export const logOutUser = () => {
 
 	return (dispatch) => {
+		dispatch({ type: USER_LOGGED_OUT })
 		firebase.auth().signOut()
-		.then(()=> { 
-			dispatch({ type: USER_LOGGED_OUT })
-		})
 		.catch(error => console.log(error))
 	}
 }
@@ -107,7 +105,7 @@ export const fetchUserProfile = (dispatch) => {
 				snapshot.forEach(childSnapshot => {
 					let key = childSnapshot.key, 
 							value = childSnapshot.val()
-					if(key==currentUser.currentUser.uid){
+					if(key===currentUser.currentUser.uid){
 						objectLooper(userData, key, value)
 					}
 			})

@@ -54,7 +54,7 @@ class UserProfile extends Component {
       <div className="container" style={{paddingTop: 100}}>
         <div className="row justify-content-center">
           <div className="col-lg-12 text-center">
-            <hr className="section-heading-spacer"></hr>
+            <hr className="section-heading-spacer" style={{width: '100%'}}></hr>
             <div className="clearfix"></div>
             {this.showProfile()}
           </div>			                   

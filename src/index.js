@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { store, history } from './store'
 import Routes from './Routes'
 import registerServiceWorker from './registerServiceWorker'
-import { fireUpFirebaseApp, activeUser } from './firebase'
+import { activeUser } from './firebase'
 import Navigation from './components/Navigation'
 
 class StartUp extends Component {
