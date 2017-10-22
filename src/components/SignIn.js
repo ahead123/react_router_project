@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import Link from 'react-router-redux-dom-link'
 import { connect } from 'react-redux'
+import LoadingBar from 'react-redux-loading-bar'
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { signInUser, emailChanged, passwordChanged } from '../actions/userActions'
 
 class SignIn extends Component {
+
 
 	handleButtonPress(event) {
 		event.preventDefault()
@@ -12,12 +15,23 @@ class SignIn extends Component {
 	}
 
 	renderButton() {
-		if (this.props.loading) {
+		const { showLoading, hideLoading, loading } = this.props
+		if (loading) {
+			showLoading()
 			return (
-				<p>Loading...</p>
+				<div>
+					<LoadingBar 
+            showFastActions 
+            style={{ 
+              backgroundColor: 'blue', 
+              height: '5px' 
+            }}
+          />
+					<p>Loading...</p>
+				</div>
 			)
 		}
-
+		hideLoading()
 		return (
 			<button 
 				className="btn btn-primary"
@@ -36,7 +50,7 @@ class SignIn extends Component {
 		return (
 			<div className="container" style={{paddingTop: 80}}>
 				<div className="row justify-content-center">
-					<div className="col-sm-4 offset-sm-4 text-center card" style={{padding: 20}}>
+					<div className="col-sm-6 text-center card" style={{padding: 20}}>
 						<h1 className="card-title">Sign In</h1>
 							<form className="card-block">
 								<div className="form-group">
@@ -85,6 +99,6 @@ const maptStateToProps = ({ user }) => {
 }
 
 export default connect(maptStateToProps, { 
-	signInUser, emailChanged, passwordChanged  
+	signInUser, emailChanged, passwordChanged, showLoading, hideLoading  
 })(SignIn)
 

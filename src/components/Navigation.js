@@ -1,9 +1,42 @@
 import React, { Component } from 'react'
 import Link from 'react-router-redux-dom-link'
+import { connect } from 'react-redux'
+import firebase from 'firebase'
 import { NavButton } from './common'
+import { logOutUser } from '../actions/userActions'
 
 class Navigation extends Component {
+
+	handleClick() {
+		this.props.logOutUser()
+	}
+
+	showNavLinks() {
+		const { loading, email, user } = this.props
+		
+		if( email!="" && user ){
+			const message = email ? `Welcome Back! ${email}` : 'Hello'
+			return (
+				<ul className="navbar-nav ml-auto">
+					<NavButton path="/users" text={message} /> <NavButton
+						path="/" 
+						text="Sign Out"
+						onClick={this.handleClick.bind(this)} 
+					/>
+				</ul>
+			)
+		}
+		return (
+			<ul className="navbar-nav ml-auto">
+				<NavButton path="/sign-up" text="Sign Up" />
+				<NavButton path="/sign-in" text="Sign In" />
+				<NavButton path="/about" text="About" />
+			</ul>
+		)
+	}
+
 	render(){
+		console.log(this.props)
 		return(
 			<div className="col-12">
 		    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -13,11 +46,9 @@ class Navigation extends Component {
 		          <span className="navbar-toggler-icon"></span>
 		        </button>
 		        <div className="collapse navbar-collapse" id="navbarResponsive">
-		          <ul className="navbar-nav ml-auto">
-		            <NavButton path="/sign-up" text="Sign Up" />
-		            <NavButton path="/sign-in" text="Sign In" />
-		            <NavButton path="/about" text="About" />
-		          </ul>
+		          
+								{this.showNavLinks()}
+
 		        </div>
 		      </div>
 		    </nav>
@@ -27,4 +58,10 @@ class Navigation extends Component {
 	}
 }
 
-export default Navigation
+const mapStateToProps = (state) => {
+	const { loading, user, email } = state.user
+	return { loading, user, email }
+}
+
+export default connect(mapStateToProps, { logOutUser })(Navigation)
+

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Link from 'react-router-redux-dom-link'
 import '../css/landingPage/landing-page.css'
 import { Story, ListButton } from './common'
 
@@ -9,7 +8,6 @@ class Home extends Component {
   
     return (
       <div>
-
         <header className="intro-header">
           <div className="container">
             <div className="intro-message">

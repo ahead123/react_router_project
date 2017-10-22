@@ -7,37 +7,58 @@ import {
 	USER_LOGGED_OUT,
 	SIGNIN_USER_START,
 	SIGNIN_USER_SUCCESS,
-	SIGNIN_USER_FAIL 
+	SIGNIN_USER_FAIL,
+	FETCH_PROFILE_START,
+	FETCH_PROFILE_SUCCESS 
 } from '../actions/types'
 
 const INITIAL_STATE = {
 	email: '',
 	password: '',
 	error: '',
-	loading: false
+	loading: false,
+	user: null
 }
 
 export default (state=INITIAL_STATE, action) => {
 	switch (action.type) {
+
 		case EMAIL_CHANGED:
 			return { ...state, email: action.text }
+
 		case PASSWORD_CHANGED:
 			return { ...state, password: action.text }
+
 		case SIGNUP_USER_START:
 			return { ...state, loading: true }
+
 		case SIGNUP_USER_SUCCESS:
 			return { ...state, ...INITIAL_STATE, user: action.payload }
+
 		case SIGNUP_USER_FAIL:
 			return { ...state, ...INITIAL_STATE, error: action.payload }
+
 		case SIGNIN_USER_START:
 			return { ...state, loading: true }
+
 		case SIGNIN_USER_SUCCESS:
-			return { ...state, ...INITIAL_STATE, user: action.payload }
+			return { ...state, ...INITIAL_STATE, email: action.payload.email, user: action.payload }
+
 		case SIGNIN_USER_FAIL:
 			return { ...state, ...INITIAL_STATE, error: action.payload }
+
 		case USER_LOGGED_OUT:
 			return { ...state, ...INITIAL_STATE }
+
+		case FETCH_PROFILE_START:
+			return { ...state, loading: true }
+
+		case FETCH_PROFILE_SUCCESS:
+			return { ...state, ...INITIAL_STATE, email: action.payload.profile.email, user: action.payload }
+
 		default:
 			return state
 	}
 }
+
+

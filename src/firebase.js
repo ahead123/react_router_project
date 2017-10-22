@@ -1,4 +1,6 @@
 import firebase from 'firebase'
+import { store } from './store'
+import { push } from 'react-router-redux'
 
 const config = {
   apiKey: "AIzaSyC-s5uepmXmH83Rn8PN5VVR_PCh5z-fHV4",
@@ -11,4 +13,23 @@ const config = {
 
 export const fireUpFirebaseApp = () => {
 	firebase.initializeApp(config)
+}
+
+fireUpFirebaseApp()
+
+export const activeUser = (message) => {
+	firebase.auth().onAuthStateChanged((user) => {
+	    if (user) {
+	      const { currentUser } = firebase.auth()
+	      if (message) {
+	      	console.log(message, currentUser.uid)
+	      } else {
+	      	console.log(currentUser.uid)
+	      }	    
+				return currentUser.uid
+	    } else {
+	      console.log(message)
+	      store.dispatch(push('/'))
+	    }
+	  })
 }

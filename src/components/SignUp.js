@@ -39,7 +39,7 @@ class SignUp extends Component {
 		return (
 			<div className="container" style={{paddingTop: 80}}>
 				<div className="row justify-content-center">
-					<div className="col-sm-4 offset-sm-4 text-center card" style={{padding: 20}}>
+					<div className="col-sm-6 text-center card" style={{padding: 20}}>
 						<h1 className="card-title">Sign Up</h1>
 							<form className="card-block">
 								<div className="form-group">
