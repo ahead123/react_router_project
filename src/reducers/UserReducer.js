@@ -9,7 +9,8 @@ import {
 	SIGNIN_USER_SUCCESS,
 	SIGNIN_USER_FAIL,
 	FETCH_PROFILE_START,
-	FETCH_PROFILE_SUCCESS 
+	FETCH_PROFILE_SUCCESS,
+	GOOGLE_SIGN_UP_START 
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -56,6 +57,9 @@ export default (state=INITIAL_STATE, action) => {
 		case FETCH_PROFILE_SUCCESS:
 			return { ...state, ...INITIAL_STATE, email: action.payload.profile.email, user: action.payload }
 
+		case GOOGLE_SIGN_UP_START:
+			return {...state, loading: true }
+			
 		default:
 			return state
 	}

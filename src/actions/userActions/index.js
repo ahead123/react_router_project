@@ -13,7 +13,8 @@ import {
 	SIGNIN_USER_SUCCESS,
 	SIGNIN_USER_FAIL,
 	FETCH_PROFILE_START,
-	FETCH_PROFILE_SUCCESS 
+	FETCH_PROFILE_SUCCESS,
+	GOOGLE_SIGN_UP_START 
 } from '../types' 
 
 const currentUser = firebase.auth()
@@ -128,6 +129,23 @@ const fetchSuccess = (dispatch, userData) => {
 		type: FETCH_PROFILE_SUCCESS,
 		payload: userData
 	})
+}
+
+export const signUpWithGoogle = (dispatch) => {
+	return (dispatch) => {
+		dispatch({type: GOOGLE_SIGN_UP_START })
+
+		const provider = new firebase.auth.GoogleAuthProvider()
+
+		firebase.auth().signInWithRedirect(provider)
+		firebase.auth().getRedirectResult()
+			.then(result => firebase.database().ref(`/users/${result.user.uid}`).push(result.user.email))
+			.then(result => signUpUserSuccess(dispatch, result.user))
+			.catch(function(error) {
+				console.log('error with google sign in', error)
+			})
+		
+	}
 }
 
 

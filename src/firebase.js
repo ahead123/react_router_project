@@ -23,6 +23,7 @@ export const activeUser = (message) => {
 	      const { currentUser } = firebase.auth()
 	      if (message) {
 	      	console.log(message, currentUser.uid)
+	      	console.log('current user', currentUser)
 	      } else {
 	      	console.log(currentUser.uid)
 	      }	    

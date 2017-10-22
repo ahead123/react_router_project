@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Link from 'react-router-redux-dom-link'
+import LoadingBar from 'react-redux-loading-bar'
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { 
 	emailChanged, 
 	passwordChanged,
-	signUpUser 
+	signUpUser,
+	signUpWithGoogle
 } from '../actions/userActions'
 
 class SignUp extends Component {
+
+	handleGoogleSignUp(event) {
+		event.preventDefault()
+		this.props.signUpWithGoogle()
+	}
 
 	handleButtonPress(event) {
 		event.preventDefault()
@@ -16,9 +24,20 @@ class SignUp extends Component {
 	}
 
 	renderButton() {
-		if (this.props.loading) {
+		const { loading, showLoading, hideLoading } = this.props
+		if (loading) {
+			showLoading()
 			return (
-				<p>Loading...</p>
+				<div className="col-sm-12">
+					<LoadingBar 
+            showFastActions 
+            style={{ 
+              backgroundColor: '#db3236', 
+              height: '5px' 
+            }}
+          />
+					<p style={{marginTop: 25}}>Loading...</p>
+				</div>
 			)
 		}
 
@@ -67,6 +86,18 @@ class SignUp extends Component {
 								</p>
 								{this.renderButton()}
 								<p style={{marginTop: 25 }}>
+									Or...
+								</p>
+								<p style={{marginTop: 25 }}>
+									<button 
+										className="btn"
+										style={{backgroundColor: '#db3236', color: 'white'}}
+										onClick={this.handleGoogleSignUp.bind(this)}
+									>
+										Sign Up Using Google
+							  	</button>
+								</p>
+								<p style={{marginTop: 25 }}>
 									<Link to="/sign-in" style={{color: 'green' }}>
 										already have an account? sign in here
 							  	</Link>
@@ -92,7 +123,13 @@ const mapStateToProps = ({ user }) => {
 
 export default connect( 
 	mapStateToProps, 
-	{ emailChanged, passwordChanged, signUpUser }
+	{ emailChanged, 
+		passwordChanged, 
+		signUpUser, 
+		signUpWithGoogle,
+		showLoading,
+		hideLoading 
+	}
 )(SignUp)
 
 
