@@ -5,13 +5,13 @@ import { ConnectedRouter } from 'react-router-redux'
 import { store, history } from './store'
 import Routes from './Routes'
 import registerServiceWorker from './registerServiceWorker'
-import { activeUser } from './firebase'
+import { getCurrentUser } from './firebase'
 import Navigation from './components/Navigation'
 
 class StartUp extends Component {
 
 	componentWillMount() {
-	  activeUser('inside startup')
+	  getCurrentUser('inside startup')
 	}
 
 	render() {

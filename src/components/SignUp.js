@@ -40,7 +40,7 @@ class SignUp extends Component {
 				</div>
 			)
 		}
-
+		hideLoading()
 		return (
 			<button 
 				className="btn btn-primary"
@@ -54,6 +54,7 @@ class SignUp extends Component {
 	render() {
 
 		const { email, password, error, emailChanged, passwordChanged } = this.props
+		console.log('this.props.firebase', this.props)
 
 		return (
 			<div className="container" style={{paddingTop: 80}}>
@@ -113,23 +114,29 @@ class SignUp extends Component {
 	}
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = (state) => {
 
-	const { email, password, error, loading } = user
+	const { email, password, error, loading } = state.user
 
-	return { email, password, error, loading }
+	return { 
+		email, 
+		password, 
+		error, 
+		loading  
+	}
 
 }
 
-export default connect( 
-	mapStateToProps, 
-	{ emailChanged, 
-		passwordChanged, 
-		signUpUser, 
-		signUpWithGoogle,
-		showLoading,
-		hideLoading 
-	}
+export default 
+  connect(mapStateToProps, 
+		{ 
+			emailChanged, 
+			passwordChanged, 
+			signUpUser, 
+			signUpWithGoogle,
+			showLoading,
+			hideLoading 
+		}
 )(SignUp)
 
 

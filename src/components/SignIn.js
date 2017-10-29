@@ -3,7 +3,12 @@ import Link from 'react-router-redux-dom-link'
 import { connect } from 'react-redux'
 import LoadingBar from 'react-redux-loading-bar'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import { signInUser, emailChanged, passwordChanged } from '../actions/userActions'
+import { 
+	signInUser, 
+	emailChanged, 
+	passwordChanged, 
+	googleSignIn 
+} from '../actions/userActions'
 
 class SignIn extends Component {
 
@@ -12,6 +17,11 @@ class SignIn extends Component {
 		event.preventDefault()
 		const { email, password } = this.props
 		this.props.signInUser({ email, password })
+	}
+
+	handleGoogleSignIn(event) {
+		event.preventDefault()
+		this.props.googleSignIn()
 	}
 
 	renderButton() {
@@ -45,7 +55,12 @@ class SignIn extends Component {
 	render() {
 
 		const { 
-			email, password, error, emailChanged, passwordChanged } = this.props
+			email, 
+			password, 
+			error, 
+			emailChanged, 
+			passwordChanged 
+		} = this.props
 			
 		return (
 			<div className="container" style={{paddingTop: 80}}>
@@ -77,6 +92,18 @@ class SignIn extends Component {
 									{error}
 								</p>
 								{this.renderButton()}
+									<p style={{marginTop: 25 }}>
+										Or...
+									</p>
+									<p style={{marginTop: 25 }}>
+										<button 
+											className="btn"
+											style={{backgroundColor: '#db3236', color: 'white'}}
+											onClick={this.handleGoogleSignIn.bind(this)}
+										>
+											Sign In Using Google
+								  	</button>
+									</p>
 								<p style={{marginTop: 25 }}>
 									<Link to="/sign-up" style={{color: 'green' }}>
 										First time? sign up here
@@ -99,6 +126,11 @@ const maptStateToProps = ({ user }) => {
 }
 
 export default connect(maptStateToProps, { 
-	signInUser, emailChanged, passwordChanged, showLoading, hideLoading  
+	signInUser, 
+	emailChanged, 
+	passwordChanged, 
+	showLoading, 
+	hideLoading, 
+	googleSignIn  
 })(SignIn)
 

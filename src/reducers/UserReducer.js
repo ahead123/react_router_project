@@ -10,7 +10,8 @@ import {
 	SIGNIN_USER_FAIL,
 	FETCH_PROFILE_START,
 	FETCH_PROFILE_SUCCESS,
-	GOOGLE_SIGN_UP_START 
+	GOOGLE_SIGN_UP_START,
+	GOOGLE_SIGN_IN_START
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -55,11 +56,14 @@ export default (state=INITIAL_STATE, action) => {
 			return { ...state, loading: true }
 
 		case FETCH_PROFILE_SUCCESS:
-			return { ...state, ...INITIAL_STATE, email: action.payload.profile.email, user: action.payload }
+			return { ...state, ...INITIAL_STATE, email: action.payload.profile[0].email || action.payload.profile.email, user: action.payload.profile[0] || action.payload }
 
 		case GOOGLE_SIGN_UP_START:
 			return {...state, loading: true }
-			
+
+		case GOOGLE_SIGN_IN_START:
+			return {...state, loading: true }
+
 		default:
 			return state
 	}

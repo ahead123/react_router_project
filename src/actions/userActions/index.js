@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import { push } from 'react-router-redux'
-import { activeUser } from '../../firebase'
+import { getCurrentUser } from '../../firebase'
 
 import { 
 	EMAIL_CHANGED,
@@ -14,7 +14,8 @@ import {
 	SIGNIN_USER_FAIL,
 	FETCH_PROFILE_START,
 	FETCH_PROFILE_SUCCESS,
-	GOOGLE_SIGN_UP_START 
+	GOOGLE_SIGN_UP_START,
+	GOOGLE_SIGN_IN_START 
 } from '../types' 
 
 const currentUser = firebase.auth()
@@ -132,7 +133,8 @@ const fetchSuccess = (dispatch, userData) => {
 }
 
 export const signUpWithGoogle = (dispatch) => {
-	return (dispatch) => {
+	return (dispatch, getFirebase) => {
+		
 		dispatch({type: GOOGLE_SIGN_UP_START })
 
 		const provider = new firebase.auth.GoogleAuthProvider()
@@ -141,10 +143,18 @@ export const signUpWithGoogle = (dispatch) => {
 		firebase.auth().getRedirectResult()
 			.then(result => firebase.database().ref(`/users/${result.user.uid}`).push(result.user.email))
 			.then(result => signUpUserSuccess(dispatch, result.user))
-			.catch(function(error) {
-				console.log('error with google sign in', error)
-			})
+			.catch(error => signUpUserFail(dispatch, error))
 		
+	}
+}
+
+export const googleSignIn = (dispatch) => {
+	return (dispatch, getFirebase) => {
+		dispatch({type: GOOGLE_SIGN_IN_START})
+
+		const provider = new firebase.auth.GoogleAuthProvider()
+		firebase.auth().signInWithRedirect(provider)
+		firebase.auth().getRedirectResult()
 	}
 }
 

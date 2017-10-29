@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import { store } from './store'
 import { push } from 'react-router-redux'
 
-const config = {
+export const config = {
   apiKey: "AIzaSyC-s5uepmXmH83Rn8PN5VVR_PCh5z-fHV4",
   authDomain: "redux-test-6b112.firebaseapp.com",
   databaseURL: "https://redux-test-6b112.firebaseio.com",
@@ -17,7 +17,7 @@ export const fireUpFirebaseApp = () => {
 
 fireUpFirebaseApp()
 
-export const activeUser = (message) => {
+export const getCurrentUser = (message) => {
 	firebase.auth().onAuthStateChanged((user) => {
 	    if (user) {
 	      const { currentUser } = firebase.auth()
