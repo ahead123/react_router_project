@@ -26,8 +26,8 @@ export const getCurrentUser = (message) => {
 	      	console.log('current user', currentUser)
 	      } else {
 	      	console.log(currentUser.uid)
-	      }	    
-				return currentUser.uid
+	      }         
+				return currentUser
 	    } else {
 	      console.log(message)
 	      store.dispatch(push('/'))

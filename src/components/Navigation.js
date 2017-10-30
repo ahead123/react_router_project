@@ -1,13 +1,32 @@
 import React, { Component } from 'react'
 import Link from 'react-router-redux-dom-link'
+import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import {
+  firebaseConnect,
+  dataToJS,
+  pathToJS
+} from 'react-redux-firebase'
 import { NavButton } from './common'
-import { logOutUser } from '../actions/userActions'
+import { logOutUser, fetchUserProfile } from '../actions/userActions'
+import { store } from '../store'
 
 class Navigation extends Component {
 
+	componentDidMount() {
+		this.checkForUser()
+	}
+
+	checkForUser(){
+		if(this.props.firebase.auth()){
+			store.dispatch(push('/users'))
+		} 		
+	}
+
 	handleClick(event) {
 		event.preventDefault()
+		this.props.firebase.logout()
 		this.props.logOutUser()
 	}
 
@@ -64,8 +83,22 @@ class Navigation extends Component {
 
 const mapStateToProps = (state) => {
 	const { loading, user, email } = state.user
-	return { loading, user, email }
+	return { 
+    loading, 
+    user, 
+    email,
+    users: dataToJS(state.firebase, 'users'),
+    auth: pathToJS(state.firebase, 'auth'),
+    profile: pathToJS(state.firebase, 'profile')
+  }
 }
 
-export default connect(mapStateToProps, { logOutUser })(Navigation)
+export default 
+  compose(
+    firebaseConnect(['users','auth']),
+    connect(mapStateToProps, { logOutUser, fetchUserProfile })
+	)(Navigation)
+
+
+
 

@@ -9,6 +9,7 @@ import {
 } from 'react-redux-firebase'
 import { logOutUser, fetchUserProfile } from '../actions/userActions'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import { getCurrentUser } from '../firebase'
 
 class UserProfile extends Component {
 
@@ -16,8 +17,11 @@ class UserProfile extends Component {
     this.props.fetchUserProfile()
 	}
 
-	handleClick() {
+	handleClick(event) {
+    event.preventDefault()
+    this.props.firebase.logout()
 		this.props.logOutUser()
+
 	}
 
   showProfile() {
@@ -31,7 +35,7 @@ class UserProfile extends Component {
     } = this.props
 
     if(loading){
-      showLoading()
+      
       return (
         <div>
           <LoadingBar 
@@ -46,16 +50,16 @@ class UserProfile extends Component {
       )
     } 
 
-    hideLoading()
+   
     
     return (
       <div className="col-lg-12">
         {
-          profile ? <div className="center-block"><img className="img-responsive rounded-circle" height="100" width="100" src={profile.avatarUrl} /></div> : ""
+          this.props.profile!=null ? <div className="center-block"><img className="img-responsive rounded-circle" height="100" width="100" src={profile.avatarUrl} /></div> : ""
         }
         <h2 className="section-heading">
         {
-          profile ? profile.displayName : email.split('@')[0]
+          email ? email.split('@')[0] : "User Profile"
         }
         </h2>
         <p className="lead">User Stats</p>
@@ -99,7 +103,7 @@ const mapStateToProps = (state) => {
 
 export default 
   compose(
-    firebaseConnect(['users']),
+    firebaseConnect(['users','auth','profile']),
     connect(mapStateToProps, { 
     	logOutUser, 
       fetchUserProfile, 

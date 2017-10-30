@@ -74,7 +74,7 @@ export const signInUser = ({ email, password }) => {
 	}
 }
 
-const signInUserSuccess = (dispatch, user) => {
+export const signInUserSuccess = (dispatch, user) => {
 	dispatch({ 
 		type: SIGNIN_USER_SUCCESS, 
 		payload: user 
@@ -108,7 +108,7 @@ export const fetchUserProfile = (dispatch) => {
 					let key = childSnapshot.key, 
 							value = childSnapshot.val()
 					if(key===currentUser.currentUser.uid){
-						objectLooper(userData, key, value)
+						constructUserData(userData, key, value)
 					}
 			})
 		})
@@ -117,11 +117,11 @@ export const fetchUserProfile = (dispatch) => {
 }
 
 // helper method for fetchUserProfile
-const objectLooper = (anObject, key, value) => {
+const constructUserData = (userData, key, value) => {
 		for(var x in value){
-			anObject['profile']=value[x]
+			userData['profile']=value[x]
 		}
-	return anObject
+	return userData
 }
 
 // helper method for fetchUserProfile
@@ -144,17 +144,14 @@ export const signUpWithGoogle = (dispatch) => {
 			.then(result => firebase.database().ref(`/users/${result.user.uid}`).push(result.user.email))
 			.then(result => signUpUserSuccess(dispatch, result.user))
 			.catch(error => signUpUserFail(dispatch, error))
-		
 	}
 }
 
 export const googleSignIn = (dispatch) => {
 	return (dispatch, getFirebase) => {
 		dispatch({type: GOOGLE_SIGN_IN_START})
-
 		const provider = new firebase.auth.GoogleAuthProvider()
-		firebase.auth().signInWithRedirect(provider)
-		firebase.auth().getRedirectResult()
+		firebase.auth().signInWithRedirect(provider)		
 	}
 }
 

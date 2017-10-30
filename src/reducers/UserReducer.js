@@ -56,7 +56,7 @@ export default (state=INITIAL_STATE, action) => {
 			return { ...state, loading: true }
 
 		case FETCH_PROFILE_SUCCESS:
-			return { ...state, ...INITIAL_STATE, email: action.payload.profile[0].email || action.payload.profile.email, user: action.payload.profile[0] || action.payload }
+			return { ...state, ...INITIAL_STATE, email: action.payload.profile.email || action.payload.profile[0].email, user: action.payload || action.payload.profile[0] }
 
 		case GOOGLE_SIGN_UP_START:
 			return {...state, loading: true }

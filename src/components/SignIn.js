@@ -9,9 +9,9 @@ import {
 	passwordChanged, 
 	googleSignIn 
 } from '../actions/userActions'
+import { getCurrentUser } from '../firebase'
 
 class SignIn extends Component {
-
 
 	handleButtonPress(event) {
 		event.preventDefault()
